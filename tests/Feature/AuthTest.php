@@ -116,7 +116,7 @@ class AuthTest extends TestCase
     }
 
     #[Test]
-    public function user_cannot_login_with_unvalid_credentials()
+    public function user_cannot_login_with_invalid_credentials()
     {
 
         $response = $this->postJson('/api/login', [

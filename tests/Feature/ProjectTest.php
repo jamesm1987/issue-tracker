@@ -25,17 +25,21 @@ class ProjectTest extends TestCase
     #[Test]
     public function an_admin_can_create_a_project(): void
     {
-        $this->login();
+        $user = $this->login();
         
         $response = $this->postJson('/api/projects', [
-            'name' => 'New Project'
+            'name' => 'New Project',
+            'created_by' => $user->id,
+            'created_by_name' => $user->name
         ]);
 
         $response->assertStatus(201)
         ->assertJsonStructure(['project' => 'project']);
         
         $this->assertDatabaseHas('projects', [
-            'name' => 'New Project'
+            'name' => 'New Project',
+            'created_by' => $user->id,
+            'created_by_name' => $user->name,
         ]);
     }
 

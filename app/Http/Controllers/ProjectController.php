@@ -35,10 +35,15 @@ class ProjectController extends Controller
     
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
+            'created_by' => 'required',
+            'created_by_name' => 'required'
         ]);
+
 
         $project = Project::create([
             'name'     => $validated['name'],
+            'created_by' => auth()->user()->id,
+            'created_by_name' => auth()->user()->name,
         ]);
 
         return response()->json([

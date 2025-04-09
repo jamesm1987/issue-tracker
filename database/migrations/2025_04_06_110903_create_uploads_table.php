@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('uploads', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('created_by_name');
-            $table->softDeletes();
+            $table->string('key');
+            $table->string('filename');
+            $table->string('mime_type');
+            $table->foreignId('uploaded_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('uploaded_by_name');
+            $table->nullableMorphs('uploadable');
+
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('uploads');
     }
 };

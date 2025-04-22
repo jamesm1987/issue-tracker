@@ -19,16 +19,25 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
 
-        $role = Role::firstOrCreate(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'Admin']);
 
-        $user = User::role('admin')->inRandomOrder()->first() 
+        $user = User::role('Admin')->inRandomOrder()->first() 
             ?? User::factory()->create()->assignRole($role);
 
 
         return [
             'name' => fake()->words(5, true),
             'created_by' => $user->id,
-            'created_by_name' => $user->name
+            'created_by_name' => $user->name,
+
         ];
+    }
+
+    public function hasIssues(int $count = 5): static
+    {
+        return $this->has(
+            Issue::factory()->count($count),
+            'issues'
+        );
     }
 }

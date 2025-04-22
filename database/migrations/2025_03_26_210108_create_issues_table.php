@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use App\Models\Project;
+
 return new class extends Migration
 {
     /**
@@ -17,6 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('status')->default('open');
             $table->string('priority')->default('low');
+            $table->foreignIdFor(Project::class)->OnDelete('cascade');
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->string('created_by_name');
             $table->foreignId('fix_by')->nullable()->constrained('users')->nullOnDelete();

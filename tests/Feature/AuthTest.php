@@ -21,6 +21,19 @@ class AuthTest extends TestCase
         
         $this->seed();
     }
+
+    #[Test]
+    public function all_roles_can_be_assigned_to_users()
+    {
+
+        $roles = ['Admin', 'Project Manager', 'Developer', 'Client'];
+
+        foreach ($roles as $role) {
+            $user = $this->login($role);
+
+            $this->assertTrue($user->hasRole($role));
+        }
+    }
     
     #[Test]
     public function admin_can_add_user(): void

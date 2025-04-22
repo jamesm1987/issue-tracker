@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
+use App\Enums\RoleNames;
 
 class AuthController extends Controller
 {
@@ -26,7 +27,7 @@ class AuthController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role'     => ['required', Rule::in(['Admin', 'Employee', 'Client'])],
+            'role'     => ['required', Rule::in(RoleNames::all())],
         ]);
 
         $user = User::create([

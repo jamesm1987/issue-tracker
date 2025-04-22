@@ -8,6 +8,7 @@ use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Traits\CreateUser;
 use App\Models\Project;
+use App\Models\Issue;
 
 
 class ProjectTest extends TestCase
@@ -86,7 +87,7 @@ class ProjectTest extends TestCase
     }
 
     #[test]
-    public function admin_or_employee_can_view_all_projects(): void
+    public function non_client_user_can_view_all_projects(): void
     {
         $this->login();
 
@@ -103,5 +104,35 @@ class ProjectTest extends TestCase
                 '*' => ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
             ]
         ]);
+    }
+
+    #[test]
+    public function view_all_project_issues()
+    {
+        $this->login();
+
+        $project = Project::factory()
+            ->has(Issue::factory()->count(3))
+            ->create();
+        
+        $response = $this->getJson("/api/projects/$project->id");
+        $response->assertStatus(200);
+
+        $response->assertJsonPath('data.id', $project->id);
+        $response->assertJsonCount(3, 'data.issues');
+        
+        foreach ($project->issues as $issue) {
+            $response->assertJsonFragment(['id' => $issue->id]);
+        }
+    }
+
+    #[test]
+    public function a_client_can_be_assigned_to_a_project()
+    {
+        $user = $this->login();
+
+        $project = Project::factory()->create();
+
+        $user->inviteUser('client@client.com');
     }
 }

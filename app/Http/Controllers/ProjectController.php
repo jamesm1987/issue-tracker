@@ -22,6 +22,15 @@ class ProjectController extends Controller
         ]);
     }
 
+    public function show(Request $request, Project $project) 
+    {
+        $project->load('issues');
+        
+        return response()->json([
+            'data' => new ProjectResource($project),
+        ]);
+    }
+
     public function store(Request $request)
     {
 

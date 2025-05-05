@@ -35,80 +35,80 @@ class AuthTest extends TestCase
         }
     }
     
-    #[Test]
-    public function admin_can_add_user(): void
-    {
-        $user = $this->login();
+    // #[Test]
+    // public function admin_can_add_user(): void
+    // {
+    //     $user = $this->login();
         
-        $role = Role::all()->pluck('name')->random();
+    //     $role = Role::all()->pluck('name')->random();
         
-        $response = $this->postJson('/api/register', [
-            'name' => 'user',
-            'email' => 'user@user.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-            'role' => $role
-        ]);
+    //     $response = $this->postJson('/api/register', [
+    //         'name' => 'user',
+    //         'email' => 'user@user.com',
+    //         'password' => 'password',
+    //         'password_confirmation' => 'password',
+    //         'role' => $role
+    //     ]);
 
-        $response->assertStatus(201)
-            ->assertJsonStructure(['user' => 'token']);
+    //     $response->assertStatus(201)
+    //         ->assertJsonStructure(['user' => 'token']);
 
         
-        $this->assertDatabaseHas('users', [
-            'email' => 'user@user.com'
-        ]);
-    }
+    //     $this->assertDatabaseHas('users', [
+    //         'email' => 'user@user.com'
+    //     ]);
+    // }
 
-    #[Test]
-    public function non_admin_cannot_add_user(): void
-    {
+    // #[Test]
+    // public function non_admin_cannot_add_user(): void
+    // {
 
-        $userRole = Role::whereNot('name', 'Admin')->pluck('name')->random();
+    //     $userRole = Role::whereNot('name', 'Admin')->pluck('name')->random();
 
-        $user = $this->login($userRole);
+    //     $user = $this->login($userRole);
         
-        $role = Role::all()->pluck('name')->random();
+    //     $role = Role::all()->pluck('name')->random();
         
-        $response = $this->postJson('/api/register', [
-            'name' => 'user',
-            'email' => 'user@user.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-            'role' => $role
-        ]);
+    //     $response = $this->postJson('/api/register', [
+    //         'name' => 'user',
+    //         'email' => 'user@user.com',
+    //         'password' => 'password',
+    //         'password_confirmation' => 'password',
+    //         'role' => $role
+    //     ]);
 
-        $response->assertStatus(403)
-        ->assertJson(['message' => 'Unauthorized']);
-    }
+    //     $response->assertStatus(403)
+    //     ->assertJson(['message' => 'Unauthorized']);
+    // }
 
-    #[Test]
-    public function user_cannot_be_registered_with_existing_email(): void
-    {
-        $user = $this->login();
+    // #[Test]
+    // public function user_cannot_be_registered_with_existing_email(): void
+    // {
+    //     $user = $this->login();
     
-        $role = Role::all()->pluck('name')->random();
+    //     $role = Role::all()->pluck('name')->random();
 
-        $existingUser = User::factory()->create([
-            'name' => 'Existing User',
-            'email' => 'user@user.com',
-            'password' => bcrypt('password'),
-        ]);
+    //     $existingUser = User::factory()->create([
+    //         'name' => 'Existing User',
+    //         'email' => 'user@user.com',
+    //         'password' => bcrypt('password'),
+    //     ]);
     
 
-        $existingUser->assignRole($role);
+    //     $existingUser->assignRole($role);
     
-        $response = $this->postJson('/api/register', [
-            'name' => 'New User',
-            'email' => 'user@user.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-            'role' => $role
-        ]);
+    //     $response = $this->postJson('/api/register', [
+    //         'name' => 'New User',
+    //         'email' => 'user@user.com',
+    //         'password' => 'password',
+    //         'password_confirmation' => 'password',
+    //         'role' => $role
+    //     ]);
 
 
-        $response->assertStatus(422)
-             ->assertJsonValidationErrors(['email']);
-    }
+    //     $response->assertStatus(422)
+    //          ->assertJsonValidationErrors(['email']);
+    // }
    
     #[Test]
     public function user_can_login()

@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 use App\Models\Project;
-use App\Models\Issue;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('project_user', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Project::class)->OnDelete('cascade');
-            $table->foreignIdFor(Issue::class)->OnDelete('cascade');
+            $table->foreignIdFor(User::class)->OnDelete('cascade');
             $table->timestamps();
         });
     }

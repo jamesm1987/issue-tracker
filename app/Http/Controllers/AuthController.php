@@ -8,43 +8,42 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
-use App\Enums\RoleNames;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
 
-        if (!auth()->check()) {
-            abort(401, 'Unauthorized');
-        }
+        // if (!auth()->check()) {
+        //     abort(401, 'Unauthorized');
+        // }
 
-        if (!auth()->user()->can('create user')) {
-            abort(403, 'Unauthorized');
-        }
+        // if (!auth()->user()->can('create user')) {
+        //     abort(403, 'Unauthorized');
+        // }
     
-        $validated = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'role'     => ['required', Rule::in(RoleNames::all())],
-        ]);
+        // $validated = $request->validate([
+        //     'name'     => 'required|string|max:255',
+        //     'email'    => 'required|string|email|max:255|unique:users',
+        //     'password' => 'required|string|min:8|confirmed',
+        //     'role'     => ['required', Rule::in(RoleNames::all())],
+        // ]);
 
-        $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => Hash::make($validated['password']),
-        ]);
+        // $user = User::create([
+        //     'name'     => $validated['name'],
+        //     'email'    => $validated['email'],
+        //     'password' => Hash::make($validated['password']),
+        // ]);
 
 
-        $user->assignRole($validated['role']);
+        // $user->assignRole($validated['role']);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'user'  => $user,
-            'token' => $token,
-        ], 201);
+        // return response()->json([
+        //     'user'  => $user,
+        //     'token' => $token,
+        // ], 201);
     }
 
     public function login(Request $request)

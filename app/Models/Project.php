@@ -21,4 +21,10 @@ class Project extends Model implements Auditable
     {
         return $this->hasMany(Issue::class);
     }
+
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'project_user');
+    }
+
 }

@@ -56,6 +56,8 @@ class IssueTest extends TestCase
     public function a_user_can_create_an_issue(): void
     {
         $user = $this->login();
+        $fixer = $this->login();
+        $tester = $this->login();
 
         $project = Project::factory()->create();
 
@@ -64,6 +66,10 @@ class IssueTest extends TestCase
             'description' => 'This is a test issue',
             'status' => 'open',
             'priority' => 'medium',
+            'created_by' => $user->id,
+            'created_by_name' => $user->name,
+            'fix_by' => $fixer->id,
+            'test_by' => $tester->id,
         ];
 
         $response = $this->postJson("/api/projects/$project->id/issues", $payload);

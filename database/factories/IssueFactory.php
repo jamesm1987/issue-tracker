@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use App\Models\Project;
-use App\Enums\RoleNames;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Issue>
@@ -22,14 +21,14 @@ class IssueFactory extends Factory
     public function definition(): array
     {
 
-        $role = Role::firstOrCreate(['name' => RoleNames::ADMIN]);
-        $developer = Role::firstOrCreate(['name' => RoleNames::DEVELOPER]);
+        $adminRole = Role::firstOrCreate(['name' => 'Admin']);
+        $developerRole = Role::firstOrCreate(['name' => 'Developer']);
 
-        $user = User::role(RoleNames::ADMIN)->inRandomOrder()->first() 
-            ?? User::factory()->create()->assignRole($role);
+        $adminUser = User::role('Admin')->inRandomOrder()->first() 
+            ?? User::factory()->create()->assignRole($adminRole);
 
-        $fixer = User::role(RoleNames::DEVELOPER)->inRandomOrder()->first() 
-            ?? User::factory()->create()->assignRole($developer);
+        $fixerUser = User::role('Developer')->inRandomOrder()->first() 
+            ?? User::factory()->create()->assignRole($developerRole);
 
         return [
             'title' => fake()->words(5, true),
@@ -37,10 +36,10 @@ class IssueFactory extends Factory
             'status' => $this->faker->randomElement(['open', 'in_progress', 'closed', 'fixed', 'fix_not_confirmed', 'duplicate']),
             'priority' => $this->faker->randomElement(['low', 'medium', 'high', 'critical']),
             'project_id' => Project::factory(),
-            'created_by' => $user->id,
-            'created_by_name' => $user->name,
-            'fix_by' => $fixer->id,
-            'test_by' => $user->id,
+            'created_by' => $adminUser->id,
+            'created_by_name' => $adminUser->name,
+            'fix_by' => $fixerUser->id,
+            'test_by' => $adminUser->id,
         ];
     }
 }

@@ -44,7 +44,7 @@ class IssueController extends Controller
             'test_by'  => 'required|exists:App\Models\User,id',
         ]);
 
-        $project = $project->issues()->create([
+        $issue = $project->issues()->create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'status' => $validated['status'],

@@ -6,7 +6,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use App\Enums\RoleNames;
 
 class RoleSeeder extends Seeder
 {
@@ -15,11 +14,15 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
+
+  
         // Create Roles
-        $admin = Role::create(['name' => RoleNames::ADMIN]);
-        $projectManager = Role::create(['name' => RoleNames::PROJECT_MANAGER]);
-        $developer = Role::create(['name' => RoleNames::DEVELOPER]);
-        $client = Role::create(['name' => RoleNames::CLIENT]);
+        $admin = Role::create(['name' => 'Admin']);
+        $projectManager = Role::create(['name' => 'Project Manager']);
+        $developer = Role::create(['name' => 'Developer']);
+        $client = Role::create(['name' => 'Client']);
+
+
 
         $permissions = [
             'create user',
@@ -28,6 +31,7 @@ class RoleSeeder extends Seeder
             'edit all users',
             'edit own profile',
             'delete all user',
+            'invite user',
 
             // Project permissions
             'create project',
@@ -43,7 +47,6 @@ class RoleSeeder extends Seeder
             'delete issue',
 
             // Client permission
-            'invite client',
             'edit client'
         ];
 
@@ -59,7 +62,7 @@ class RoleSeeder extends Seeder
             'delete project',
             'view all projects',
             'view own project',
-            'invite client',
+            'invite user',
             'edit client',
         ];
         $developerPermissions = [
@@ -92,6 +95,7 @@ class RoleSeeder extends Seeder
         $projectManager->givePermissionTo([
             'view all projects',
             'view all users',
+            'invite user',
             'view own profile',
             'edit all users',
             'edit own profile',

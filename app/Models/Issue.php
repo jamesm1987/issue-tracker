@@ -11,7 +11,14 @@ class Issue extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'created_by'];
+    protected $fillable = [
+        'title', 
+        'description', 
+        'created_by',
+        'created_by_name',
+        'fix_by',
+        'test_by'
+    ];
 
     public function project()
     {

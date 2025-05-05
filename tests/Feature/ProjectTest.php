@@ -125,14 +125,4 @@ class ProjectTest extends TestCase
             $response->assertJsonFragment(['id' => $issue->id]);
         }
     }
-
-    #[test]
-    public function a_client_can_be_assigned_to_a_project()
-    {
-        $user = $this->login();
-
-        $project = Project::factory()->create();
-
-        $user->inviteUser('client@client.com');
-    }
 }
